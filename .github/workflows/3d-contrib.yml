@@ -1,0 +1,27 @@
+name: 3D Contrib
+
+on:
+  schedule:
+    - cron: "0 20 * * *"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run 3D Contrib
+        uses: yoshi389111/github-profile-3d-contrib@v0.7.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          USERNAME: ${{ github.repository_owner }}
+
+      - name: Commit & Push
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+          git add -A .
+          git commit -m "Update 3D Contribution"
+          git push
